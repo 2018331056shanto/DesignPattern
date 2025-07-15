@@ -5,11 +5,11 @@ package MultiThreadIssueFix;
  * <p>Date:7/15/25</p>
  * <p>Time:2:32 PM</p>
  */
-public class Singleton {
+public class SingletonFix {
 
-    private static volatile Singleton instance;
+    private static volatile SingletonFix instance;
     public String value;
-    private Singleton(String value){
+    private SingletonFix(String value){
         try{
             Thread.sleep(100);
         }catch (InterruptedException e){
@@ -18,9 +18,16 @@ public class Singleton {
         this.value=value;
     }
 
-    public static Singleton getInstance(String value){
-        if(instance==null){
-            instance=new Singleton(value);
+    public static SingletonFix getInstance(String value){
+
+        SingletonFix singleton=instance;
+        if(singleton!=null){
+            return singleton;
+        }
+        synchronized (SingletonFix.class){
+            if(instance==null){
+                instance=new SingletonFix(value);
+            }
         }
         return instance;
     }
